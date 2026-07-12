@@ -315,6 +315,21 @@ export default async function ArticlePage({
         title?: string | null
         description?: string | null
       }>
+      
+      image?: number | string | {
+  id?: number | string
+  url?: string | null
+  alt?: string | null
+  filename?: string | null
+  width?: number | null
+  height?: number | null
+}
+
+caption?: string | null
+altOverride?: string | null
+width?: 'full' | 'medium' | null
+
+
     }
 
     if (blockData.blockType === 'richText') {
@@ -429,6 +444,58 @@ export default async function ArticlePage({
         </section>
       )
     }
+
+
+      if (blockData.blockType === 'articleImage') {
+  const media =
+    typeof blockData.image === 'object' &&
+    blockData.image !== null
+      ? blockData.image
+      : null
+
+  const imageUrl = media?.url
+
+  if (!imageUrl) {
+    return null
+  }
+
+  const imageAlt =
+    blockData.altOverride?.trim() ||
+    media.alt?.trim() ||
+    blockData.caption?.trim() ||
+    article.title
+
+  const widthClass =
+    blockData.width === 'medium'
+      ? 'article-image-medium'
+      : 'article-image-full'
+
+  return (
+    <figure
+      className={`article-image-block ${widthClass}`}
+      key={`block-${index}`}
+    >
+      <div className="article-image-frame">
+        <img
+          src={imageUrl}
+          alt={imageAlt}
+          width={media.width ?? undefined}
+          height={media.height ?? undefined}
+          loading="lazy"
+        />
+      </div>
+
+      {blockData.caption ? (
+        <figcaption className="article-image-caption">
+          {blockData.caption}
+        </figcaption>
+      ) : null}
+    </figure>
+  )
+}
+
+
+
 
     return null
   })}
