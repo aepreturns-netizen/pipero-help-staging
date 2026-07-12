@@ -71,6 +71,28 @@ type ArticleBodyBlock = {
   }>
 }
 
+type RelatedArticle = {
+  id?: number | string
+  title?: string | null
+  slug?: string | null
+  summary?: string | null
+  estimatedReadMinutes?: number | null
+  _status?: 'draft' | 'published' | null
+}
+
+function isRelatedArticle(
+  value: number | string | RelatedArticle,
+): value is RelatedArticle {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof value.title === 'string' &&
+    value.title.trim().length > 0 &&
+    typeof value.slug === 'string' &&
+    value.slug.trim().length > 0
+  )
+}
+
 const getPayloadClient = cache(async () => {
   return getPayload({ config })
 })
@@ -331,6 +353,25 @@ export default async function ArticlePage({
     article.category !== null
       ? article.category
       : null
+
+  const relatedArticleValues =
+    (
+      article as unknown as {
+        relatedArticles?:
+          | Array<
+              number | string | RelatedArticle
+            >
+          | null
+      }
+    ).relatedArticles || []
+
+  const relatedArticles = relatedArticleValues
+    .filter(isRelatedArticle)
+    .filter(
+      (relatedArticle) =>
+        relatedArticle.slug !== article.slug &&
+        relatedArticle._status !== 'draft',
+    )
 
   const supportNumber =
     settings.supportWhatsApp || '6287877898277'
@@ -715,6 +756,68 @@ export default async function ArticlePage({
               return null
             })}
           </div>
+
+          {relatedArticles.length > 0 ? (
+            <section
+              className="article-related"
+              aria-labelledby="related-articles-title"
+            >
+              <div className="article-related-heading">
+                <span className="section-kicker">
+                  ARTIKEL TERKAIT
+                </span>
+
+                <h2 id="related-articles-title">
+                  Lanjutkan membaca
+                </h2>
+
+                <p>
+                  Pelajari panduan lain yang masih
+                  berkaitan dengan artikel ini.
+                </p>
+              </div>
+
+              <div className="article-related-grid">
+                {relatedArticles.map(
+                  (relatedArticle) => (
+                    <Link
+                      className="article-related-card"
+                      href={`/artikel/${relatedArticle.slug}`}
+                      key={
+                        relatedArticle.id ||
+                        relatedArticle.slug
+                      }
+                    >
+                      <span
+                        className="article-related-icon"
+                        aria-hidden="true"
+                      >
+                        ↗
+                      </span>
+
+                      <div className="article-related-copy">
+                        <h3>
+                          {relatedArticle.title}
+                        </h3>
+
+                        {relatedArticle.summary ? (
+                          <p>
+                            {relatedArticle.summary}
+                          </p>
+                        ) : null}
+
+                        <span className="article-related-meta">
+                          {relatedArticle.estimatedReadMinutes ||
+                            3}{' '}
+                          menit baca
+                        </span>
+                      </div>
+                    </Link>
+                  ),
+                )}
+              </div>
+            </section>
+          ) : null}
 
           <div className="article-back">
             <Link href="/">
