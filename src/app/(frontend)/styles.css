@@ -1259,3 +1259,65 @@ input {
     font-size: 13px;
   }
 }
+
+
+/* ========================================
+   ARTICLE YOUTUBE BLOCK
+======================================== */
+
+.article-youtube {
+  margin: 44px 0;
+}
+
+.article-youtube-heading {
+  margin-bottom: 20px;
+}
+
+.article-youtube-title {
+  margin: 0 0 8px !important;
+}
+
+.article-youtube-description {
+  margin: 0 !important;
+  color: var(--pipero-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.article-youtube-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 56.25%;
+  border: 1px solid var(--pipero-border);
+  border-radius: 20px;
+  background: #071923;
+  box-shadow: 0 14px 36px rgba(13, 83, 118, 0.1);
+}
+
+.article-youtube-frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 600px) {
+  .article-youtube {
+    margin: 34px 0;
+  }
+
+  .article-youtube-heading {
+    margin-bottom: 16px;
+  }
+
+  .article-youtube-description {
+    font-size: 15px;
+  }
+
+  .article-youtube-frame {
+    border-radius: 15px;
+  }
+}
