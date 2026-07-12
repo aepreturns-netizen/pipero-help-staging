@@ -300,13 +300,21 @@ export default async function ArticlePage({
 
       <section className="article-layout">
         <article className="container article-content">
-          <div className="article-body">
+         <div className="article-body">
   {article.body.map((block, index) => {
     const blockData = block as unknown as {
       blockType?: string
+
       content?: unknown
+
       style?: 'info' | 'tip' | 'warning' | 'success'
       title?: string | null
+
+      heading?: string | null
+      steps?: Array<{
+        title?: string | null
+        description?: string | null
+      }>
     }
 
     if (blockData.blockType === 'richText') {
@@ -368,6 +376,57 @@ export default async function ArticlePage({
             </div>
           </div>
         </aside>
+      )
+    }
+
+    if (blockData.blockType === 'steps') {
+      const steps = blockData.steps || []
+
+      if (steps.length === 0) {
+        return null
+      }
+
+      return (
+        <section
+          className="article-steps"
+          key={`block-${index}`}
+        >
+          {blockData.heading ? (
+            <h2 className="article-steps-heading">
+              {blockData.heading}
+            </h2>
+          ) : null}
+
+          <ol className="article-steps-list">
+            {steps.map((step, stepIndex) => (
+              <li
+                className="article-step"
+                key={`step-${index}-${stepIndex}`}
+              >
+                <span
+                  className="article-step-number"
+                  aria-hidden="true"
+                >
+                  {stepIndex + 1}
+                </span>
+
+                <div className="article-step-content">
+                  {step.title ? (
+                    <h3 className="article-step-title">
+                      {step.title}
+                    </h3>
+                  ) : null}
+
+                  {step.description ? (
+                    <p className="article-step-description">
+                      {step.description}
+                    </p>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
       )
     }
 
