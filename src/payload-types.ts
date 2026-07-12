@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    categories: Category;
+    articles: Article;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +91,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'help-center-settings': HelpCenterSetting;
+  };
+  globalsSelect: {
+    'help-center-settings': HelpCenterSettingsSelect<false> | HelpCenterSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -161,6 +169,200 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * Alamat artikel. Dibuat otomatis dari judul dan masih dapat diedit.
+   */
+  slug: string;
+  description?: string | null;
+  /**
+   * Untuk tahap awal dapat diisi emoji.
+   */
+  icon?: string | null;
+  order: number;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  /**
+   * Ditampilkan pada hasil pencarian dan bagian atas artikel.
+   */
+  summary: string;
+  category: number | Category;
+  body: (
+    | ArticleRichTextBlock
+    | ArticleCalloutBlock
+    | ArticleStepsBlock
+    | ArticleImageBlock
+    | ArticleYouTubeBlock
+    | ArticleFAQBlock
+  )[];
+  tags?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  relatedArticles?: (number | Article)[] | null;
+  /**
+   * Kata yang mungkin dicari pengguna tetapi tidak tertulis pada judul.
+   */
+  searchKeywords?: string | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+    noIndex?: boolean | null;
+  };
+  /**
+   * Alamat artikel. Dibuat otomatis dari judul dan masih dapat diedit.
+   */
+  slug: string;
+  order?: number | null;
+  featured?: boolean | null;
+  /**
+   * Dalam menit.
+   */
+  estimatedReadMinutes?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleRichTextBlock".
+ */
+export interface ArticleRichTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleCalloutBlock".
+ */
+export interface ArticleCalloutBlock {
+  style: 'info' | 'tip' | 'warning' | 'success';
+  title?: string | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'callout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleStepsBlock".
+ */
+export interface ArticleStepsBlock {
+  heading?: string | null;
+  steps: {
+    title?: string | null;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'steps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleImageBlock".
+ */
+export interface ArticleImageBlock {
+  image: number | Media;
+  caption?: string | null;
+  /**
+   * Opsional. Jika kosong, gunakan alt text dari Media.
+   */
+  altOverride?: string | null;
+  width?: ('full' | 'medium') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'articleImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleYouTubeBlock".
+ */
+export interface ArticleYouTubeBlock {
+  url: string;
+  title?: string | null;
+  description?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'youtubeVideo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleFAQBlock".
+ */
+export interface ArticleFAQBlock {
+  heading?: string | null;
+  items: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -190,6 +392,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: number | Article;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -273,6 +483,137 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  icon?: T;
+  order?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  summary?: T;
+  category?: T;
+  body?:
+    | T
+    | {
+        richText?: T | ArticleRichTextBlockSelect<T>;
+        callout?: T | ArticleCalloutBlockSelect<T>;
+        steps?: T | ArticleStepsBlockSelect<T>;
+        articleImage?: T | ArticleImageBlockSelect<T>;
+        youtubeVideo?: T | ArticleYouTubeBlockSelect<T>;
+        faq?: T | ArticleFAQBlockSelect<T>;
+      };
+  tags?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  relatedArticles?: T;
+  searchKeywords?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noIndex?: T;
+      };
+  slug?: T;
+  order?: T;
+  featured?: T;
+  estimatedReadMinutes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleRichTextBlock_select".
+ */
+export interface ArticleRichTextBlockSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleCalloutBlock_select".
+ */
+export interface ArticleCalloutBlockSelect<T extends boolean = true> {
+  style?: T;
+  title?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleStepsBlock_select".
+ */
+export interface ArticleStepsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleImageBlock_select".
+ */
+export interface ArticleImageBlockSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  altOverride?: T;
+  width?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleYouTubeBlock_select".
+ */
+export interface ArticleYouTubeBlockSelect<T extends boolean = true> {
+  url?: T;
+  title?: T;
+  description?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleFAQBlock_select".
+ */
+export interface ArticleFAQBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -310,6 +651,37 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "help-center-settings".
+ */
+export interface HelpCenterSetting {
+  id: number;
+  /**
+   * Gunakan format internasional tanpa tanda +.
+   */
+  supportWhatsApp: string;
+  supportButtonLabel?: string | null;
+  searchPlaceholder?: string | null;
+  defaultSeoTitle?: string | null;
+  defaultSeoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "help-center-settings_select".
+ */
+export interface HelpCenterSettingsSelect<T extends boolean = true> {
+  supportWhatsApp?: T;
+  supportButtonLabel?: T;
+  searchPlaceholder?: T;
+  defaultSeoTitle?: T;
+  defaultSeoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
