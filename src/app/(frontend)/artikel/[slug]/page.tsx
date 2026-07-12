@@ -33,6 +33,44 @@ type RichTextValue = {
   }
 }
 
+type ArticleMedia = {
+  id?: number | string
+  url?: string | null
+  alt?: string | null
+  filename?: string | null
+  width?: number | null
+  height?: number | null
+}
+
+type ArticleBodyBlock = {
+  blockType?: string
+
+  content?: unknown
+
+  style?: 'info' | 'tip' | 'warning' | 'success'
+  title?: string | null
+
+  heading?: string | null
+
+  steps?: Array<{
+    title?: string | null
+    description?: string | null
+  }>
+
+  image?: number | string | ArticleMedia
+  caption?: string | null
+  altOverride?: string | null
+  width?: 'full' | 'medium' | null
+
+  url?: string | null
+  description?: string | null
+
+  items?: Array<{
+    question?: string | null
+    answer?: unknown
+  }>
+}
+
 const getPayloadClient = cache(async () => {
   return getPayload({ config })
 })
@@ -371,49 +409,7 @@ export default async function ArticlePage({
           <div className="article-body">
             {article.body.map((block, index) => {
               const blockData =
-                block as unknown as {
-                  blockType?: string
-
-                  content?: unknown
-
-                  style?:
-                    | 'info'
-                    | 'tip'
-                    | 'warning'
-                    | 'success'
-
-                  title?: string | null
-
-                  heading?: string | null
-
-                  steps?: Array<{
-                    title?: string | null
-                    description?: string | null
-                  }>
-
-                  image?:
-                    | number
-                    | string
-                    | {
-                        id?: number | string
-                        url?: string | null
-                        alt?: string | null
-                        filename?: string | null
-                        width?: number | null
-                        height?: number | null
-                      }
-
-                  caption?: string | null
-                  altOverride?: string | null
-
-                  width?:
-                    | 'full'
-                    | 'medium'
-                    | null
-
-                  url?: string | null
-                  description?: string | null
-                }
+                block as unknown as ArticleBodyBlock
 
               if (
                 blockData.blockType === 'richText'
@@ -652,6 +648,65 @@ export default async function ArticlePage({
                         allowFullScreen
                         referrerPolicy="strict-origin-when-cross-origin"
                       />
+                    </div>
+                  </section>
+                )
+              }
+
+              if (
+                blockData.blockType === 'faq'
+              ) {
+                const faqItems = (
+                  blockData.items || []
+                ).filter(
+                  (item) =>
+                    Boolean(
+                      item.question?.trim(),
+                    ) && Boolean(item.answer),
+                )
+
+                if (faqItems.length === 0) {
+                  return null
+                }
+
+                return (
+                  <section
+                    className="article-faq"
+                    key={`block-${index}`}
+                  >
+                    <h2 className="article-faq-heading">
+                      {blockData.heading ||
+                        'Pertanyaan yang Sering Ditanyakan'}
+                    </h2>
+
+                    <div className="article-faq-list">
+                      {faqItems.map(
+                        (item, itemIndex) => (
+                          <details
+                            className="article-faq-item"
+                            key={`faq-${index}-${itemIndex}`}
+                          >
+                            <summary className="article-faq-question">
+                              <span>
+                                {item.question}
+                              </span>
+
+                              <span
+                                className="article-faq-icon"
+                                aria-hidden="true"
+                              >
+                                +
+                              </span>
+                            </summary>
+
+                            <div className="article-faq-answer">
+                              {renderRichText(
+                                item.answer,
+                              )}
+                            </div>
+                          </details>
+                        ),
+                      )}
                     </div>
                   </section>
                 )
