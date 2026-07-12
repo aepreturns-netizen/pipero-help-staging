@@ -301,26 +301,79 @@ export default async function ArticlePage({
       <section className="article-layout">
         <article className="container article-content">
           <div className="article-body">
-            {article.body.map((block, index) => {
-              const blockData = block as unknown as {
-                blockType?: string
-                content?: unknown
-              }
+  {article.body.map((block, index) => {
+    const blockData = block as unknown as {
+      blockType?: string
+      content?: unknown
+      style?: 'info' | 'tip' | 'warning' | 'success'
+      title?: string | null
+    }
 
-              if (blockData.blockType === 'richText') {
-                return (
-                  <section
-                    className="article-block"
-                    key={`block-${index}`}
-                  >
-                    {renderRichText(blockData.content)}
-                  </section>
-                )
-              }
+    if (blockData.blockType === 'richText') {
+      return (
+        <section
+          className="article-block"
+          key={`block-${index}`}
+        >
+          {renderRichText(blockData.content)}
+        </section>
+      )
+    }
 
-              return null
-            })}
+    if (blockData.blockType === 'callout') {
+      const calloutStyle =
+        blockData.style === 'tip' ||
+        blockData.style === 'warning' ||
+        blockData.style === 'success'
+          ? blockData.style
+          : 'info'
+
+      const calloutIcon = {
+        info: 'ℹ️',
+        tip: '💡',
+        warning: '⚠️',
+        success: '✅',
+      }[calloutStyle]
+
+      const calloutLabel = {
+        info: 'Informasi',
+        tip: 'Tips',
+        warning: 'Peringatan',
+        success: 'Berhasil',
+      }[calloutStyle]
+
+      return (
+        <aside
+          className={`article-callout article-callout-${calloutStyle}`}
+          key={`block-${index}`}
+          role="note"
+          aria-label={blockData.title || calloutLabel}
+        >
+          <span
+            className="article-callout-icon"
+            aria-hidden="true"
+          >
+            {calloutIcon}
+          </span>
+
+          <div className="article-callout-content">
+            {blockData.title ? (
+              <h3 className="article-callout-title">
+                {blockData.title}
+              </h3>
+            ) : null}
+
+            <div className="article-callout-body">
+              {renderRichText(blockData.content)}
+            </div>
           </div>
+        </aside>
+      )
+    }
+
+    return null
+  })}
+</div>
 
           <div className="article-back">
             <Link href="/">
