@@ -3382,3 +3382,166 @@ html.unified-sidebar-open {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* =========================================================
+   UNIFIED HELP CENTER — ARTICLE LAYOUT POLISH
+   Menyamakan proporsi desktop dengan Help Center original,
+   tanpa mengubah CMS, search, FAQ, video, image, atau routing.
+   ========================================================= */
+
+/* Desktop utama: sidebar sedikit lebih lega, artikel lebih tenang. */
+@media (min-width: 1241px) {
+  .unified-container {
+    width: min(1510px, calc(100% - 64px));
+  }
+
+  .unified-doc-layout {
+    grid-template-columns: 315px minmax(0, 1fr) 275px;
+    gap: 24px;
+    padding-top: 26px;
+  }
+
+  .unified-sidebar {
+    padding: 15px;
+  }
+
+  .unified-article-card {
+    padding: 27px 36px 42px;
+  }
+
+  .unified-article-header h1 {
+    font-size: clamp(36px, 2.55vw, 42px);
+    line-height: 1.07;
+  }
+
+  .unified-article-header > div:first-child > p {
+    font-size: 15.5px;
+    line-height: 1.62;
+  }
+
+  .unified-right-card {
+    padding: 18px;
+  }
+}
+
+/* Judul sidebar panjang tetap nyaman dibaca. */
+.unified-article-links button {
+  overflow-wrap: anywhere;
+}
+
+/* Area artikel dibuat lebih ringan dan mendekati versi original. */
+.unified-article-card {
+  box-shadow: 0 18px 58px rgba(23, 35, 93, 0.065);
+}
+
+.unified-article-header {
+  align-items: end;
+}
+
+.unified-article-body {
+  max-width: 860px;
+}
+
+.unified-article-body > .article-block:last-child > :last-child,
+.unified-article-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* Di desktop, artikel terkait cukup tampil di panel kanan.
+   Versi kartu bawah tetap muncul ketika panel kanan disembunyikan. */
+.unified-related {
+  display: none;
+}
+
+@media (max-width: 1240px) {
+  .unified-doc-layout {
+    grid-template-columns: 295px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .unified-article-header h1 {
+    font-size: clamp(34px, 3.3vw, 44px);
+  }
+
+  .unified-related {
+    display: block;
+  }
+}
+
+/* Tablet portrait: artikel memenuhi ruang, daftar artikel lewat drawer. */
+@media (min-width: 701px) and (max-width: 920px) {
+  .unified-doc-layout {
+    width: min(100% - 36px, 820px);
+  }
+
+  .unified-article-card {
+    padding: 26px 30px 38px;
+  }
+
+  .unified-article-header h1 {
+    font-size: clamp(34px, 5.1vw, 42px);
+  }
+}
+
+/* HP portrait: header, judul, breadcrumb, dan action tidak berdesakan. */
+@media (max-width: 700px) {
+  .unified-help .header-actions {
+    gap: 7px;
+  }
+
+  .unified-breadcrumb {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .unified-breadcrumb span,
+  .unified-breadcrumb strong {
+    min-width: 0;
+  }
+
+  .unified-breadcrumb strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .unified-article-header h1 {
+    font-size: clamp(28px, 8.5vw, 35px);
+    line-height: 1.1;
+  }
+
+  .unified-article-header > div:first-child > p {
+    line-height: 1.62;
+  }
+
+  .unified-article-actions {
+    justify-content: flex-start;
+  }
+
+  .unified-related .article-related-heading h2 {
+    font-size: 27px;
+  }
+
+  .unified-related .article-related-card {
+    padding: 18px;
+  }
+}
+
+/* HP landscape: area baca tetap ringkas, tetapi tombol masih nyaman. */
+@media (max-width: 932px) and (max-height: 600px) and (orientation: landscape) {
+  .unified-article-card {
+    padding: 18px 22px 30px;
+  }
+
+  .unified-breadcrumb {
+    margin-bottom: 14px;
+  }
+
+  .unified-article-header h1 {
+    font-size: clamp(28px, 5vw, 36px);
+  }
+
+  .unified-article-actions {
+    margin-top: 12px;
+  }
+}
