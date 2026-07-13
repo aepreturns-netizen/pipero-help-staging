@@ -3545,3 +3545,21 @@ html.unified-sidebar-open {
     margin-top: 12px;
   }
 }
+
+
+/* Fix urutan layer drawer artikel pada tablet dan HP */
+@media (max-width: 920px) {
+  .unified-doc-layout {
+    z-index: auto;
+  }
+
+  .unified-sidebar {
+    z-index: 145;
+    background: #ffffff;
+    box-shadow: 18px 0 50px rgba(16, 25, 70, 0.2);
+  }
+
+  .unified-sidebar-overlay {
+    z-index: 135;
+  }
+} 
