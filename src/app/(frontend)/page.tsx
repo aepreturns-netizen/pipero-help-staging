@@ -8,6 +8,12 @@ import type { Article } from '@/payload-types'
 
 import './styles.css'
 
+const PIPERO_LOGO_URL =
+  'https://assets.cdn.filesafe.space/9pulV8ZpW1HI8LDNGYza/media/6a222805b7929406c15b399d.png'
+
+const PIPERO_ROBOT_URL =
+  'https://assets.cdn.filesafe.space/9pulV8ZpW1HI8LDNGYza/media/6a2e78c9fe75e68647a3c3a5.png'
+
 export const dynamic = 'force-dynamic'
 
 type HomePageProps = {
@@ -334,31 +340,92 @@ export default async function HomePage({
   )
 
   return (
-    <main className="help-center">
-      <header className="site-header">
+    <main className="help-center home-page">
+      <header className="site-header home-header">
         <div className="container header-inner">
-          <Link href="/" className="brand">
-            <span className="brand-mark">P</span>
-
-            <span className="brand-copy">
-              <strong>Pipero</strong>
-              <small>Help Center</small>
-            </span>
+          <Link
+            href="/"
+            className="brand brand-logo"
+            aria-label="Pipero Help Center"
+          >
+            <img
+              src={PIPERO_LOGO_URL}
+              alt="Pipero"
+              className="brand-logo-image"
+            />
           </Link>
 
-          <a
-            className="support-button"
-            href={`https://wa.me/${supportNumber}?text=${supportMessage}`}
-            target="_blank"
-            rel="noreferrer"
+          <nav
+            className="header-nav"
+            aria-label="Navigasi Help Center"
           >
-            <span aria-hidden="true">💬</span>
-            {supportLabel}
-          </a>
+            <a href="#panduan-awal">
+              Mulai dari Sini
+            </a>
+            <a
+              href="#kategori-bantuan"
+              className="is-active"
+            >
+              Panduan
+            </a>
+            <a href="#troubleshooting">
+              Troubleshooting
+            </a>
+            <a
+              href={`https://wa.me/${supportNumber}?text=${supportMessage}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp Support
+            </a>
+          </nav>
+
+          <div className="header-actions">
+            <a
+              className="support-button"
+              href={`https://wa.me/${supportNumber}?text=${supportMessage}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {supportLabel}
+            </a>
+
+            <details className="mobile-nav">
+              <summary aria-label="Buka navigasi">
+                <span aria-hidden="true">☰</span>
+              </summary>
+
+              <nav aria-label="Navigasi mobile Help Center">
+                <a href="#panduan-awal">
+                  Mulai dari Sini
+                </a>
+                <a href="#kategori-bantuan">
+                  Panduan
+                </a>
+                <a href="#troubleshooting">
+                  Troubleshooting
+                </a>
+                <a
+                  href={`https://wa.me/${supportNumber}?text=${supportMessage}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  WhatsApp Support
+                </a>
+              </nav>
+            </details>
+          </div>
         </div>
       </header>
 
       <section className="hero">
+        <img
+          className="hero-robot hero-robot-right"
+          src={PIPERO_ROBOT_URL}
+          alt=""
+          aria-hidden="true"
+        />
+
         <div className="container hero-content">
           <span className="eyebrow">
             PIPERO HELP CENTER
@@ -469,7 +536,7 @@ export default async function HomePage({
           </section>
         ) : (
           <>
-            <section className="categories-section">
+            <section className="categories-section" id="kategori-bantuan">
               <div className="section-heading">
                 <div>
                   <span className="section-kicker">
@@ -523,7 +590,7 @@ export default async function HomePage({
             </section>
 
             {displayedPopularArticles.length > 0 && (
-              <section className="popular-section">
+              <section className="popular-section" id="panduan-awal">
                 <div className="section-heading">
                   <div>
                     <span className="section-kicker">
@@ -630,6 +697,17 @@ export default async function HomePage({
           </>
         )}
       </div>
+
+      <a
+        className="floating-support"
+        href={`https://wa.me/${supportNumber}?text=${supportMessage}`}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat dengan Pipero melalui WhatsApp"
+      >
+        <img src={PIPERO_ROBOT_URL} alt="" />
+        <span aria-hidden="true" />
+      </a>
 
       <section className="support-cta">
         <div className="container support-cta-inner">
