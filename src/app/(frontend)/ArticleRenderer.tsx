@@ -7,6 +7,7 @@ type LexicalNode = {
   text?: string
   format?: number
   tag?: string
+  start?: number
   children?: LexicalNode[]
   fields?: {
     url?: string
@@ -97,11 +98,13 @@ function renderLexicalNode(node: LexicalNode, key: string): ReactNode {
     case 'quote':
       return <blockquote key={key}>{children}</blockquote>
     case 'list':
-      return node.tag === 'ol' ? (
-        <ol key={key}>{children}</ol>
-      ) : (
-        <ul key={key}>{children}</ul>
-      )
+  return node.tag === 'ol' ? (
+    <ol key={key} start={node.start}>
+      {children}
+    </ol>
+  ) : (
+    <ul key={key}>{children}</ul>
+  )
     case 'listitem':
       return <li key={key}>{children}</li>
     case 'link': {
