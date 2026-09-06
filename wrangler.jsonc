@@ -20,7 +20,7 @@
       "binding": "D1",
       "database_id": "99e3763a-475d-475b-bca2-629865c623f9",
       "database_name": "pipero-help-db-staging",
-      "remote": true,
+
     },
   ],
   "services": [
