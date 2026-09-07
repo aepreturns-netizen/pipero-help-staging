@@ -3392,12 +3392,12 @@ html.unified-sidebar-open {
 /* Desktop utama: sidebar sedikit lebih lega, artikel lebih tenang. */
 @media (min-width: 1241px) {
   .unified-container {
-    width: min(1510px, calc(100% - 64px));
+    width: min(1600px, calc(100% - 48px));
   }
 
   .unified-doc-layout {
-    grid-template-columns: 315px minmax(0, 1fr) 275px;
-    gap: 24px;
+    grid-template-columns: 280px minmax(0, 1fr) 250px;
+    gap: 22px;
     padding-top: 26px;
   }
 
@@ -3406,7 +3406,7 @@ html.unified-sidebar-open {
   }
 
   .unified-article-card {
-    padding: 27px 36px 42px;
+    padding: 27px 32px 42px;
   }
 
   .unified-article-header h1 {
@@ -3439,7 +3439,7 @@ html.unified-sidebar-open {
 }
 
 .unified-article-body {
-  max-width: 860px;
+  max-width: 1000px;
 }
 
 .unified-article-body > .article-block:last-child > :last-child,
