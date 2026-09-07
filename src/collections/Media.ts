@@ -22,7 +22,7 @@ export const Media: CollectionConfig = {
         {
           protocol: 'https',
           hostname: 's3.amazonaws.com',
-          pathname: '/cdn.freshdesk.com/data/helpdesk/attachments/*',
+          pathname: '/cdn.freshdesk.com/data/helpdesk/attachments/production/*/original/*',
         },
       ],
     },
