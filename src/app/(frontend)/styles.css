@@ -1205,23 +1205,35 @@ input {
 ======================================== */
 
 .article-image-block {
-  margin-top: 38px;
-  margin-bottom: 38px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 38px 0;
+  box-sizing: border-box;
 }
 
 .article-image-full {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .article-image-medium {
   width: 100%;
   max-width: 680px;
+  min-width: 0;
   margin-left: auto;
   margin-right: auto;
 }
 
 .article-image-frame {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
+  box-sizing: border-box;
   border: 1px solid var(--pipero-border);
   border-radius: 20px;
   background: #f6fbfe;
@@ -1231,23 +1243,26 @@ input {
 .article-image-frame img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   margin: 0;
+  object-fit: contain;
 }
 
 .article-image-caption {
+  max-width: 100%;
   margin-top: 12px;
   padding: 0 8px;
   color: var(--pipero-muted);
   font-size: 14px;
   line-height: 1.6;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 600px) {
   .article-image-block {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin: 30px 0;
   }
 
   .article-image-frame {
@@ -3562,4 +3577,27 @@ html.unified-sidebar-open {
   .unified-sidebar-overlay {
     z-index: 135;
   }
-} 
+}
+
+/* =========================================================
+   UNIFIED HELP CENTER — MEDIA OVERFLOW SAFETY
+   Keeps rich-media blocks inside the center article column.
+   ========================================================= */
+
+.unified-article-body,
+.unified-article-body > *,
+.unified-article-body .article-block,
+.unified-article-body .article-image-block,
+.unified-article-body .article-image-frame {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.unified-article-body .article-image-block,
+.unified-article-body .article-image-full {
+  width: 100%;
+}
+
+.unified-article-body .article-image-frame img {
+  max-width: 100%;
+}
