@@ -16,5 +16,15 @@ export const Media: CollectionConfig = {
     // These are not supported on Workers yet due to lack of sharp
     crop: false,
     focalPoint: false,
+
+    pasteURL: {
+      allowList: [
+        {
+          protocol: 'https',
+          hostname: 's3.amazonaws.com',
+          pathname: '/cdn.freshdesk.com/data/helpdesk/attachments/*',
+        },
+      ],
+    },
   },
 }
