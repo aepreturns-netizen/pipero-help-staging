@@ -181,7 +181,7 @@ function renderLexicalNode(node: LexicalNode, key: string): ReactNode {
 
       return (
         <figure
-          className="article-image-block article-image-full"
+         className="article-image-block article-inline-image"
           key={key}
         >
           <div className="article-image-frame">
