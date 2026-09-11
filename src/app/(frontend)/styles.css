@@ -3603,20 +3603,25 @@ html.unified-sidebar-open {
 }
 
 
-.article-inline-image {
+/* ========================================
+   INLINE IMAGE INSIDE RICH TEXT
+======================================== */
+
+.unified-article-body .article-inline-image {
   width: 75%;
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.article-inline-image img {
+.unified-article-body .article-inline-image img {
   width: 100%;
   height: auto;
 }
 
 @media (max-width: 768px) {
-  .article-inline-image {
+  .unified-article-body .article-inline-image {
     width: 100%;
+    max-width: 100%;
   }
 }
