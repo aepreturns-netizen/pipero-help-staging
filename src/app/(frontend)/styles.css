@@ -3601,3 +3601,22 @@ html.unified-sidebar-open {
 .unified-article-body .article-image-frame img {
   max-width: 100%;
 }
+
+
+.article-inline-image {
+  width: 75%;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article-inline-image img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .article-inline-image {
+    width: 100%;
+  }
+}
