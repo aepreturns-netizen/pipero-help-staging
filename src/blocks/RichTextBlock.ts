@@ -1,5 +1,10 @@
 import type { Block } from 'payload'
 
+import {
+  EXPERIMENTAL_TableFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+
 export const RichTextBlock: Block = {
   slug: 'richText',
   interfaceName: 'ArticleRichTextBlock',
@@ -13,6 +18,13 @@ export const RichTextBlock: Block = {
       type: 'richText',
       required: true,
       label: 'Isi',
+
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          EXPERIMENTAL_TableFeature(),
+        ],
+      }),
     },
   ],
 }
