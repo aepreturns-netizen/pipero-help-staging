@@ -19,6 +19,12 @@ type LexicalNode = {
   start?: number
   children?: LexicalNode[]
 
+  // Payload Lexical Table Node
+  headerState?: number
+  colSpan?: number
+  rowSpan?: number
+  backgroundColor?: string | null
+
   // Payload Lexical Upload Node
   value?: number | string | ArticleMedia
   relationTo?: string
@@ -83,6 +89,25 @@ function renderText(node: LexicalNode, key: string): ReactNode {
   return <Fragment key={key}>{content}</Fragment>
 }
 
+function renderTableCellChildren(
+  children: LexicalNode[] | undefined,
+  parentKey: string,
+): ReactNode {
+  return children?.map((child, index) => {
+    const childKey = `${parentKey}-${index}`
+
+    if (child.type === 'paragraph') {
+      return (
+        <div key={childKey}>
+          {renderChildren(child.children, childKey)}
+        </div>
+      )
+    }
+
+    return renderLexicalNode(child, childKey)
+  })
+}
+
 function renderLexicalNode(node: LexicalNode, key: string): ReactNode {
   const children = renderChildren(node.children, key)
 
@@ -142,6 +167,85 @@ function renderLexicalNode(node: LexicalNode, key: string): ReactNode {
       )
     }
 
+    case 'table':
+      return (
+        <div
+          key={key}
+          style={{
+            width: '100%',
+            overflowX: 'auto',
+            margin: '24px 0',
+            border: '1px solid #d9edf7',
+            borderRadius: 12,
+            background: '#ffffff',
+          }}
+        >
+          <table
+            style={{
+              width: '100%',
+              minWidth: 560,
+              borderCollapse: 'collapse',
+              background: '#ffffff',
+              fontSize: 15,
+            }}
+          >
+            <tbody>{children}</tbody>
+          </table>
+        </div>
+      )
+
+    case 'tablerow':
+      return <tr key={key}>{children}</tr>
+
+    case 'tablecell': {
+      const isHeader = (node.headerState ?? 0) > 0
+      const cellChildren = renderTableCellChildren(node.children, `${key}-cell`)
+      const background =
+        node.backgroundColor || (isHeader ? '#eef9ff' : '#ffffff')
+
+      if (isHeader) {
+        return (
+          <th
+            key={key}
+            colSpan={node.colSpan || undefined}
+            rowSpan={node.rowSpan || undefined}
+            style={{
+              border: '1px solid #d9edf7',
+              padding: '12px 14px',
+              textAlign: 'left',
+              verticalAlign: 'top',
+              backgroundColor: background,
+              color: '#12212b',
+              fontWeight: 700,
+              lineHeight: 1.55,
+            }}
+          >
+            {cellChildren}
+          </th>
+        )
+      }
+
+      return (
+        <td
+          key={key}
+          colSpan={node.colSpan || undefined}
+          rowSpan={node.rowSpan || undefined}
+          style={{
+            border: '1px solid #d9edf7',
+            padding: '12px 14px',
+            textAlign: 'left',
+            verticalAlign: 'top',
+            backgroundColor: background,
+            color: '#12212b',
+            fontWeight: 400,
+            lineHeight: 1.55,
+          }}
+        >
+          {cellChildren}
+        </td>
+      )
+    }
+
     /*
      * INLINE IMAGE / UPLOAD
      *
@@ -181,7 +285,7 @@ function renderLexicalNode(node: LexicalNode, key: string): ReactNode {
 
       return (
         <figure
-         className="article-image-block article-inline-image"
+          className="article-image-block article-inline-image"
           key={key}
         >
           <div className="article-image-frame">
