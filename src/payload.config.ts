@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import {
-  EXPERIMENTAL_TableFeature,
+  BlocksFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
@@ -16,6 +16,7 @@ import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Articles } from './collections/Articles'
 import { HelpCenterSettings } from './globals/HelpCenterSettings'
+import { RichTextTableBlock } from './blocks/RichTextTableBlock'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -60,7 +61,7 @@ const cloudflareLogger = {
   error: createLog('error', console.error),
   fatal: createLog('fatal', console.error),
   silent: () => {},
-} as any // Use PayloadLogger type when it's exported
+} as any
 
 const cloudflare = isBuild
   ? await getCloudflareContextFromWrangler(false)
@@ -83,7 +84,9 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
-      EXPERIMENTAL_TableFeature(),
+      BlocksFeature({
+        blocks: [RichTextTableBlock],
+      }),
     ],
   }),
 
@@ -109,8 +112,6 @@ export default buildConfig({
   ],
 })
 
-// Adapted from:
-// https://github.com/opennextjs/opennextjs-cloudflare/blob/d00b3a13e42e65aad76fba41774815726422cc39/packages/cloudflare/src/api/cloudflare-context.ts#L328C36-L328C46
 function getCloudflareContextFromWrangler(
   remoteBindings = isProduction,
 ): Promise<CloudflareContext> {
