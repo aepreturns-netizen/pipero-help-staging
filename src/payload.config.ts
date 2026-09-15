@@ -76,7 +76,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-
+  blocks: [RichTextTableBlock],
   collections: [Users, Media, Categories, Articles],
 
   globals: [HelpCenterSettings],
@@ -85,7 +85,7 @@ export default buildConfig({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
       BlocksFeature({
-        blocks: [RichTextTableBlock],
+        blocks: ['richTextTable'],
       }),
     ],
   }),
