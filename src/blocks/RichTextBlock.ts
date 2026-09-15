@@ -1,12 +1,5 @@
 import type { Block } from 'payload'
 
-import {
-  BlocksFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { RichTextTableBlock } from './RichTextTableBlock'
-
 export const RichTextBlock: Block = {
   slug: 'richText',
   interfaceName: 'ArticleRichTextBlock',
@@ -22,15 +15,6 @@ export const RichTextBlock: Block = {
       type: 'richText',
       required: true,
       label: 'Isi',
-
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          BlocksFeature({
-            blocks: [RichTextTableBlock],
-          }),
-        ],
-      }),
     },
   ],
 }
