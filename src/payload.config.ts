@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import {
-  BlocksFeature,
+  EXPERIMENTAL_TableFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
@@ -16,7 +16,6 @@ import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Articles } from './collections/Articles'
 import { HelpCenterSettings } from './globals/HelpCenterSettings'
-import { RichTextTableBlock } from './blocks/RichTextTableBlock'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -76,7 +75,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  blocks: [RichTextTableBlock],
+
   collections: [Users, Media, Categories, Articles],
 
   globals: [HelpCenterSettings],
@@ -84,9 +83,7 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
-      BlocksFeature({
-        blocks: [RichTextTableBlock],
-      }),
+      EXPERIMENTAL_TableFeature(),
     ],
   }),
 
