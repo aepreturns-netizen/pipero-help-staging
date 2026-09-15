@@ -85,7 +85,7 @@ export default buildConfig({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
       BlocksFeature({
-        blocks: ['richTextTable'],
+        blocks: [RichTextTableBlock],
       }),
     ],
   }),
