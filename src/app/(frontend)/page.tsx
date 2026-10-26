@@ -207,10 +207,14 @@ export default async function HomePage() {
     }
   })
 
-  const preferredDefault =
-    articles.find((article) => article.slug === 'selamat-datang-di-pipero') ||
-    articles.find((article) => article.featured) ||
-    articles[0]
+  
+const preferredDefault =
+  articles.find(
+    (article) =>
+      article.slug ===
+      'panduan-memulai-pipero-11-langkah-praktis-siap-pakai-untuk-bisnis-anda'
+  ) || articles[0]
+
 
   return (
     <HelpCenterShell
