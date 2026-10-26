@@ -417,7 +417,7 @@ export function HelpCenterShell({
             <button type="button" onClick={() => selectArticle(settings.defaultArticleSlug)}>
               Mulai dari Sini
             </button>
-            <button type="button" className="is-active" onClick={() => selectArticle(activeArticle.slug, { scroll: false })}>
+            <button type="button" className="is-active" onClick={() => selectArticle(settings.defaultArticleSlug)}>
               Panduan
             </button>
             <button type="button" onClick={() => selectFirstArticleInCategory('troubleshooting')}>
