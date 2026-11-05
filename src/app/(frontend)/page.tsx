@@ -196,6 +196,7 @@ export default async function HomePage() {
       categoryId,
       categoryName,
       categorySlug: category?.slug || 'panduan',
+      order: article.order ?? 100,
       body: article.body,
       tags: (article.tags || []).map((tag) => tag.label),
       relatedSlugs,
