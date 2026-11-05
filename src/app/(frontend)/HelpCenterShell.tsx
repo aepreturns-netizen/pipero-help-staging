@@ -81,6 +81,13 @@ export function HelpCenterShell({
       result.set(article.categoryId, current)
     }
 
+    // Each category has its own independent article order.
+    for (const categoryArticles of result.values()) {
+      categoryArticles.sort(
+        (a, b) => a.order - b.order || a.title.localeCompare(b.title, 'id'),
+      )
+    }
+
     return result
   }, [articles])
 

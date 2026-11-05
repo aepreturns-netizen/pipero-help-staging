@@ -17,7 +17,7 @@ export const Articles: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', '_status', 'updatedAt'],
+    defaultColumns: ['order', 'title', 'category', '_status', 'updatedAt'],
     group: 'Help Center',
   },
   access: {
