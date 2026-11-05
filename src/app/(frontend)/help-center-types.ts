@@ -16,6 +16,7 @@ export type HelpCenterArticle = {
   categoryId: string
   categoryName: string
   categorySlug: string
+  order: number
   body: Article['body']
   tags: string[]
   relatedSlugs: string[]
